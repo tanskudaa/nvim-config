@@ -92,6 +92,18 @@ do
     -- Focus newly created splits
     opt.splitright = true
     opt.splitbelow = true
+
+    -- Save cursor position, folds etc. on buffer exit, load on enter
+    vim.api.nvim_create_autocmd('BufWinEnter', {
+        group = vimrc_augroup,
+        pattern = '*.*',
+        command = 'silent loadview'
+    })
+    vim.api.nvim_create_autocmd('BufWinLeave', {
+        group = vimrc_augroup,
+        pattern = '*.*',
+        command = 'mkview'
+    })
 end
 
 

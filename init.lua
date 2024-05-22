@@ -270,6 +270,20 @@ require('lazy').setup({
         end,
     },
 
+    {
+        'echasnovski/mini.nvim',
+        config = function()
+            require('mini.pairs').setup()
+
+            local statusline = require('mini.statusline')
+            statusline.setup({ use_icons = g.have_nerd_font })
+            statusline.section_location = function()
+                return '%2l:%-2v'
+            end
+            opt.showmode = false -- statusline makes vim showmode redundant
+        end,
+    },
+
     { -- gitsigns, display git status symbols in left margin
         'lewis6991/gitsigns.nvim',
         config = function()

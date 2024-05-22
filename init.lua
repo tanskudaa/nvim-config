@@ -217,7 +217,9 @@ require('lazy').setup({
             keymap.set('n', '<leader>tf', builtin.find_files, { desc = '[T]elescope - Search [f]files' })
             keymap.set('n', '<leader>tg', builtin.git_files, { desc = '[T]elescope - Search [g]it' })
             keymap.set('n', '<leader>tb', builtin.buffers, { desc = '[T]elescope - Search [b]uffers' })
-            keymap.set('n', '<leader>ts', builtin.grep_string, { desc = '[T]elescope - Search [s]tring' })
+            keymap.set('n', '<leader>ts', function() builtin.grep_string { search = '' } end, {
+                desc = '[T]elescope - Search [s]tring'
+            })
             keymap.set('n', '<leader>tk', builtin.keymaps, { desc = '[T]elescope - Search [k]eymaps' })
         end,
 

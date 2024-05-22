@@ -284,7 +284,7 @@ require('lazy').setup({
         end,
     },
 
-    {
+    { -- mini.nvim, status bar and auto closing parentheses
         'echasnovski/mini.nvim',
         config = function()
             require('mini.pairs').setup()

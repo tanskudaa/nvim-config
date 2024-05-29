@@ -97,7 +97,7 @@ do
     vim.api.nvim_create_autocmd('BufWinEnter', {
         group = vimrc_augroup,
         pattern = '*.*',
-        command = 'silent loadview'
+        command = 'silent! loadview'
     })
     vim.api.nvim_create_autocmd('BufWinLeave', {
         group = vimrc_augroup,
@@ -324,7 +324,7 @@ require('lazy').setup({
                 multiline = true,
                 multiline_pattern = '^.',       -- lua pattern
                 multiline_context = 10,
-                before = '',                    -- highlight nothing before keyword
+                before = 'fg',                  -- highlight line contents before keyword
                 keyword = 'bg',                 -- highlight keyword background
                 after = 'fg',                   -- highlight the comment contents
                 pattern = [[.*<(KEYWORDS)\s*]], -- vim regex

@@ -109,8 +109,18 @@ end
 
 -- Vim remap commands
 do
+    -- Unmap arrow keys
+    keymap.set('', '<Up>', '<NOP>')
+    keymap.set('', '<Down>', '<NOP>')
+    keymap.set('', '<Left>', '<NOP>')
+    keymap.set('', '<Right>', '<NOP>')
+
+    -- Buffer switching
+    keymap.set('n', '<Tab>', vim.cmd.bnext, { desc = 'Switch to next buffer' })
+    keymap.set('n', '<S-Tab>', vim.cmd.bprevious, { desc = 'Switch to previous buffer' })
+
     -- Explore
-    keymap.set('n', '<leader>e', vim.cmd.Explore, { desc = '[E]xplore' })
+    keymap.set('n', '<leader>E', vim.cmd.Explore, { desc = '[E]xplore' })
 
     -- Clear search highlight
     keymap.set('n', '<leader><backspace>', '<cmd>nohlsearch<CR>', { desc = 'Clear search higlights' })
@@ -126,8 +136,9 @@ do
 
     -- Yank to system clipboard
     keymap.set('', '<leader>y', '"+y', { desc = 'y to system clipboard' })
-    keymap.set('', '<leader>yy', '"+yy', { desc = 'yy to system clipboard' })
     keymap.set('', '<leader>Y', '"+Y', { desc = 'Y to system clipboard' })
+    -- NOTE Following is also useful, but enabling it delays <leader>y activation time
+    -- keymap.set('', '<leader>yy', '"+yy', { desc = 'yy to system clipboard' })
 
     -- Paste from system clipboard
     keymap.set('', '<leader>p', '"+p', { desc = 'p from system clipboard' })
@@ -270,7 +281,9 @@ require('lazy').setup({
 
                 mapping = {
                     ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+                    ['<Down>'] = cmp.mapping.select_next_item(cmp_select),
                     ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+                    ['<Up>'] = cmp.mapping.select_prev_item(cmp_select),
                     ['<C-y>'] = cmp.mapping.confirm({ select = true }),
                 },
 
@@ -301,17 +314,23 @@ require('lazy').setup({
     { -- gitsigns, display git status symbols in left margin
         'lewis6991/gitsigns.nvim',
         config = function()
-            require('gitsigns').setup({
+            local gitsigns = require('gitsigns')
+            gitsigns.setup({
                 signs = {
-                    add = { text = '│' },
-                    change = { text = '│' },
-                    delete = { text = '│' },
+                    add          = { text = '+' },
+                    change       = { text = '┃' },
+                    delete       = { text = '-' },
+                    topdelete    = { text = '-' },
+                    changedelete = { text = '~' },
+                    untracked    = { text = '┆' },
                 },
                 signcolumn = true,
                 watch_gitdir = { follow_files = true },
                 current_line_blame = true,
                 current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
             })
+
+            keymap.set('n', '<leader>g', gitsigns.preview_hunk_inline, { desc = 'View git changes inline' })
         end,
     },
 

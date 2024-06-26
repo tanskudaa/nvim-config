@@ -21,6 +21,9 @@ do
     g.mapleader = ' '
     g.maplocalleader = ' '
 
+    -- Stop vim timeouting leader key
+    opt.timeout = false
+
     -- Make backspace behave as expected
     opt.backspace = 'indent,eol,start'
 
@@ -103,6 +106,16 @@ do
         group = vimrc_augroup,
         pattern = '*.*',
         command = 'mkview'
+    })
+
+    -- Update file in editor if it has changed on disk
+    opt.autoread = true
+
+    -- Actually autoread (https://vi.stackexchange.com/questions/444/how-do-i-reload-the-current-file/13092#13092)
+    vim.api.nvim_create_autocmd({ 'FocusGained','BufWinEnter' }, {
+        group = vimrc_augroup,
+        pattern = '*',
+        command = 'checktime'
     })
 end
 
@@ -228,10 +241,12 @@ require('lazy').setup({
             keymap.set('n', '<leader>tf', builtin.find_files, { desc = '[T]elescope - Search [f]files' })
             keymap.set('n', '<leader>tg', builtin.git_files, { desc = '[T]elescope - Search [g]it' })
             keymap.set('n', '<leader>tb', builtin.buffers, { desc = '[T]elescope - Search [b]uffers' })
+            keymap.set('n', '<leader>tk', builtin.keymaps, { desc = '[T]elescope - Search [k]eymaps' })
             keymap.set('n', '<leader>ts', function() builtin.grep_string { search = '' } end, {
                 desc = '[T]elescope - Search [s]tring'
             })
-            keymap.set('n', '<leader>tk', builtin.keymaps, { desc = '[T]elescope - Search [k]eymaps' })
+
+            keymap.set('n', '<leader>tr', builtin.lsp_references, { desc = '[T]elescope - Find [r]eferences' })
         end,
 
     },
@@ -343,7 +358,7 @@ require('lazy').setup({
                 multiline = true,
                 multiline_pattern = '^.',       -- lua pattern
                 multiline_context = 10,
-                before = 'fg',                  -- highlight line contents before keyword
+                before = '',                    -- highlight nothing before keyword
                 keyword = 'bg',                 -- highlight keyword background
                 after = 'fg',                   -- highlight the comment contents
                 pattern = [[.*<(KEYWORDS)\s*]], -- vim regex
